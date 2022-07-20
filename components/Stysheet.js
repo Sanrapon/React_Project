@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import App from '../App';
 
 const Stysheet = () => {
   return (
@@ -7,26 +8,20 @@ const Stysheet = () => {
       <Text style={styles.title}>React Native</Text>
     </View>
   )
-}
+  }
 
-export default Stysheet
-
-const styles = StyleSheet.create({
-    container: {
+conststyles = StyleSheet.create
+({ container: {
       flex: 1,
-      padding: 24,
-      backgroundColor: "#eaeaea"
-    },
-    title: {
-      marginTop: 16,
-      paddingVertical: 8,
-      borderWidth: 4,
-      borderColor: "#20232a",
+      padding: 35,
+      },
+    textInputStyle: {
+      width: '100%',
+      height: 40,
       borderRadius: 6,
-      backgroundColor: "#61dafb",
-      color: "#20232a",
-      textAlign: "center",
-      fontSize: 30,
-      fontWeight: "bold"
-    }
+      paddingHorizontal: 5,
+      borderWidth: 0.5,
+      marginTop: 15,
+    },
   });
+  export default App;
