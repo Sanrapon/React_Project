@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
 
-const Separtor = () => <View style={styles.buttonIconSepartorStyle} />;
-
 const TouchablePractice = () => {
   return (
+    
     <View style={styles.container}>
     <View style={styles.containerSize}>
     
@@ -14,14 +13,14 @@ const TouchablePractice = () => {
     <View>
         <Image source={require("../assets/facebook.png")}style={styles.butttonImageIconStyle}/>
     </View>
-    <Text style={styles.buttonTextStyle}>Login Using Facebook</Text>
+    <Text style={styles.buttonTextStyle}>
+        Login Using Facebook
+    </Text>
     </View>
     </TouchableOpacity>
 
 
-    
     <View>
-        
     <TouchableOpacity>
     <View style={styles.buttonGPlusStyle}>
     <View>
