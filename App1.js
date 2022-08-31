@@ -1,36 +1,23 @@
-import { View, Text, StyleSheet,Button } from 'react-native'
-import Cafe from './components/Cafe';
-import Logo from './components/Logo';
-const App = () => {
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import HomeScreen from './Screens/HomeScreen';
+import AboutScreen from './Screens/AboutScreen';
+import page1 from './Screens/page2';
+import page2 from './Screens/page2';
+import page3 from './Screens/page3';
 
-  const showData =()=>{
-    alert("Hello Button")
-  }
+const Stack = createNativeStackNavigator();
 
+export default function App() {
   return (
-    <View>
-    <Text>Hello React Native</Text>
-    <Logo />
-    <Button onPress={showData} title='Click Me'/>
-    {/* <Cafe/> */}
-    </View>
-  )
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Home' screenOptions={{headerStyle:{backgroundColor:'#0CA0FF'},headerTintColor:'#0CFF4B',headerTitleStyle:{fontWeight:'bold',fontSize:30}}}>
+      <Stack.Screen name='page1' component={page1}/>
+        <Stack.Screen name='page2' component={page2}/>
+        <Stack.Screen name='page3' component={page3}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
-
-export default App
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignContent: 'center'
-  },
-  title: {
-    fontSize: 20,
-  },
-  warning: {
-    color: 'red'
-  }
-});
