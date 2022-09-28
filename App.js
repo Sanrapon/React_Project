@@ -1,21 +1,73 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import page1 from './Screens/page1';
-import page2 from './Screens/page2';
-import page3 from './Screens/page3';
 
-const Stack = createNativeStackNavigator();
+import { Button, View, Text } from "react-native";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from "@react-navigation/drawer";
+import { NavigationContainer,DefaultTheme } from "@react-navigation/native";
+import ProductScreen from "./Screens/ProductScreen";
+
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors:{
+    ...DefaultTheme.colors,
+    primary:'rgb(255,45,85)',
+    background: 'rgb(242,242,242)',
+    card: 'rgb(255,255,255)',
+    text: 'rgb(28,28,30)',
+    border: 'rgb(199,199,204)',
+    notification: 'rgb(255,69,58)',
+  },
+};
+
+function Home({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      
+      <Text>Home Screen</Text>
+      <Button title = 'Go to About' onPress = {()=>navigation.openDrawer}/>
+    </View>
+  );
+}
+
+
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem label="Close drawer" onPress={() => props.navigation.closeDrawer()} />
+    </DrawerContentScrollView>
+  );
+}
+
+const Drawer = createDrawerNavigator();
+
+function MyDrawer() {
+  return (
+    <Drawer.Navigator
+      useLegacyImplementation
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      screenOptions={{
+        drawerStyle:{
+          backgroundColor:'white',
+          Width:240,
+        }
+      }}
+    >
+      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Product" component={ProductScreen} />
+    </Drawer.Navigator>
+  );
+}
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home' screenOptions={{headerStyle:{backgroundColor:'#0CA0FF'},headerTintColor:'#0CFF4B',headerTitleStyle:{fontWeight:'bold',fontSize:30}}}>
-        <Stack.Screen name='page1' component={page1}/>
-        <Stack.Screen name='page2' component={page2}/>
-        <Stack.Screen name='page3' component={page3}/>
-      </Stack.Navigator>
+    <NavigationContainer theme={MyTheme}>
+      <MyDrawer />
     </NavigationContainer>
+    
   );
 }
