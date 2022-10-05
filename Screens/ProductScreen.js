@@ -1,22 +1,55 @@
-import { StyleSheet, Text, View, Image, FlatList, ActivityIndicator } from 'react-native'
-import React,{useState, useEffect } from 'react'
+import { StyleSheet, Text, View, Image, FlatList, ActivityIndicator,SafeAreaView,TouchableOpacity } from 'react-native'
+import React , {useState, useEffect , useCallback} from 'react'
+import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
 
-const ProductScreen = () => {
+const ProductScreen = ({navigation}) => {
 
     const [product,setProduct] = useState([]);
+    const [loading,setLoading] = useState([false]);
+    const [error,setError] = useState(null);
     
-    useEffect (() =>{
+    useFocusEffect(
+    useCallback (() =>{
 
         const getData = async () =>{
+          try {
+            setLoading(true);
             const res = await axios.get('https://api.codingthailand.com/api/course');
             console.log(res.data.data)
             setProduct(res.data.data);
-        }
+            setLoading(false);
+          } 
+          catch (error) {
+            setLoading(false);
+            setError(error); // set error to state of error from axios or server
+          }
+        } 
 
         getData();
 
-    },[]);
+    },[]));
+
+    if(error){ //if error happen return this UI back
+      return(
+        <View style={styles.container}>
+        <Text>{error.message}</Text>
+        <Text>ERROR!! cannot contact server</Text>
+        </View>
+      )
+    }
+
+    if(loading === true){
+      return(
+        <View>
+          <ActivityIndicator color = '#f4511e' size = 'large'/>
+        </View>
+      )
+    }
+
+    const _onRefresh =()=>{
+      getData();
+    }
 
     const ItemSeparatorView = () => {
         return (
@@ -31,14 +64,15 @@ const ProductScreen = () => {
         );
       };
 
-  return (
-    <View>
-      <FlatList
-        data={product}
-        keyExtractor = {(item,index) =>item.id.toString()}
-        ItemSeparatorComponent ={ItemSeparatorView}
-        renderItem = {({item}) =>(
-        <View style={styles.dataContainer}>
+      const _renderItem = ({item}) => {
+        return (
+          <SafeAreaView style={{flex:1}}>
+            <TouchableOpacity>
+              style = {styles.addButtonStyle}
+              onPress ={()=>{
+                navigation.navigate('Detail' , {id:item.id , title:item.title})
+              }}
+              <View style={styles.dataContainer}>
                 <View style={styles.container}>
                     <Image
                     resizeMode = 'cover'
@@ -53,7 +87,21 @@ const ProductScreen = () => {
                 
         </View>
       </View>
-        )}
+
+            </TouchableOpacity>
+          </SafeAreaView>
+        )
+      }
+
+  return (
+    <View>
+      <FlatList
+        data={product}
+        keyExtractor = {(item,index) =>item.id.toString()}
+        ItemSeparatorComponent ={ItemSeparatorView}
+        renderItem = {_renderItem}
+        refreshing = {loading}
+        //onRefresh = {_onRefresh}
       />
     </View>
   )
@@ -93,5 +141,9 @@ const styles = StyleSheet.create({
         color: '#888',
         fontWeight: '700',
         },
+    addButtonStyle: {
+      width: '100%',
+      marginBottom: 15,
+    }
             
 })

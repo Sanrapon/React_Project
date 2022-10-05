@@ -7,6 +7,10 @@ import {
   DrawerItem,
 } from "@react-navigation/drawer";
 import { NavigationContainer,DefaultTheme } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import HomeScreen from "./Screens/HomeScreen";
+import DetailScreen from "./Screens/DetailScreen";
 import ProductScreen from "./Screens/ProductScreen";
 
 
@@ -43,6 +47,17 @@ function CustomDrawerContent(props) {
   );
 }
 
+const Stack = createNativeStackNavigator();
+
+function ProductStack(){
+  return(
+    <Stack.Navigator screenOptions={{headerStyle:{backgroundColor:'#0096DA'},headerTintColor:'#ffff',headerTitleStyle:{fontWeight:'bold'}}}>
+      <Stack.Screen name="Product" component={ProductScreen}/>
+      <Stack.Screen name="Detail" component={DetailScreen}/>
+    </Stack.Navigator>
+  )
+}
+
 const Drawer = createDrawerNavigator();
 
 function MyDrawer() {
@@ -57,8 +72,8 @@ function MyDrawer() {
         }
       }}
     >
-      <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Product" component={ProductScreen} />
+      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Product" component={ProductStack} />
     </Drawer.Navigator>
   );
 }
@@ -66,7 +81,7 @@ function MyDrawer() {
 export default function App() {
   return (
     <NavigationContainer theme={MyTheme}>
-      <MyDrawer />
+      <MyDrawer/>
     </NavigationContainer>
     
   );
